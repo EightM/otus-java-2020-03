@@ -1,18 +1,17 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '5.2.0' apply false
 }
 
 allprojects {
     apply plugin: 'java'
-    apply plugin: 'com.github.johnrengelman.shadow'
 
     repositories {
         jcenter()
     }
 
     dependencies {
-        implementation 'com.google.guava:guava:28.2-jre'
-        implementation 'junit:junit:4.12'
+        implementation Dependencies.guava
+        implementation Dependencies.junit
     }
 }
