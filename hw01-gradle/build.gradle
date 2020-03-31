@@ -4,10 +4,14 @@ plugins {
 
 version '0.1'
 
+dependencies {
+    implementation 'com.google.guava:guava'
+}
+
 shadowJar {
     manifest {
         attributes 'Main-Class': 'com.otus.hw.HelloOtus'
     }
 }
 
-tasks.jar.dependsOn(tasks.shadowJar)
+tasks.build.dependsOn(tasks.shadowJar)

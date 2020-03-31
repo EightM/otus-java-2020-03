@@ -11,7 +11,7 @@
 .mtj.tmp/
 
 # Package Files #
-#*.jar
+*.jar
 *.war
 *.nar
 *.ear
@@ -26,7 +26,7 @@ hs_err_pid*
 .gradle
 
 # Ignore Gradle build output directory
-#build
+build
 
 #Idea
 *.iml
