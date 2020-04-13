@@ -28,7 +28,7 @@ public class DIYArrayList<E> implements List<E> {
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
