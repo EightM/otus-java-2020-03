@@ -18,7 +18,7 @@ public class BankDepositTest {
         firstTestDeposit.addMoney(1001.0);
         double rightBalance = 2000.0;
         if (firstTestDeposit.getBalance() != rightBalance) {
-            String errorMessage = String.format("Expected getBalance %.1f but was %.1f",
+            String errorMessage = String.format("Expected getBalance %.1f, but was %.1f",
                     rightBalance, firstTestDeposit.getBalance());
             throw new ArithmeticException(errorMessage);
         }

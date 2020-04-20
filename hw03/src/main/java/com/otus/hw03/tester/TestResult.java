@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class TestResult {
     private final int numberOfTests;
-    Map<String, String> failedTests;
+    private Map<String, String> failedTests;
 
     public TestResult(int numberOfTests, Map<String, String> failedTests) {
         this.numberOfTests = numberOfTests;
