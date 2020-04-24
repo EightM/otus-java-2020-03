@@ -23,11 +23,11 @@ import java.util.List;
  -XX:+UseParallelGC
 
  -Xms4096m
- -Xmx256m
+ -Xmx4096m
  -XX:+UseG1GC
 
  -Xms4096m
- -Xmx256m
+ -Xmx4096m
  -XX:+UseSerialGC
 
  -Xms4096m
