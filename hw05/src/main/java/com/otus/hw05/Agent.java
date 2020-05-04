@@ -16,10 +16,7 @@ public class Agent {
                                     Class<?> classBeingRedefined,
                                     ProtectionDomain protectionDomain,
                                     byte[] classfileBuffer) {
-                if (className.equals("com/otus/hw05/Calculator")) {
                     return changeClass(classfileBuffer);
-                }
-                return classfileBuffer;
             }
         });
     }
