@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow'
+}
+
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm
+    implementation 'org.ow2.asm:asm-util:8.0.1'
+    implementation 'org.ow2.asm:asm:8.0.1'
+}
+
+shadowJar {
+    archiveBaseName.set('changerDemo')
+    manifest {
+        attributes 'Main-Class': 'com.otus.hw05.Main'
+        attributes 'Premain-Class': 'com.otus.hw05.Agent'
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
