@@ -8,17 +8,17 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ATM implements CashAcceptance, CashWithdrawal {
-    private final Map<Banknotes, Integer> safe;
+    private final Map<Banknotes, BanknotesCell> cellsSafe;
 
 
-    public ATM(Map<Banknotes, Integer> safe) {
-        Objects.requireNonNull(safe);
-        this.safe = new EnumMap<>(safe);
+    public ATM(Map<Banknotes, BanknotesCell> cellsSafe) {
+        Objects.requireNonNull(cellsSafe);
+        this.cellsSafe = new EnumMap<>(cellsSafe);
     }
 
     public long getBalance() {
-        return safe.entrySet().stream()
-                .mapToLong(entry -> entry.getKey().getNumericalValue() * entry.getValue())
+        return cellsSafe.entrySet().stream()
+                .mapToLong(entry -> entry.getKey().getNumericalValue() * entry.getValue().getQuantity())
                 .sum();
     }
 
@@ -27,14 +27,16 @@ public class ATM implements CashAcceptance, CashWithdrawal {
     }
 
     public void printBanknotesBalance() {
-        System.out.println(safe);
+        cellsSafe.forEach((k, v) -> System.out.println(String.format("%s : %d",
+                k, v.getQuantity())));
     }
 
     @Override
-    public void putMoney(Map<Banknotes, Integer> money) {
+    public void putMoney(Map<Banknotes, BanknotesCell> money) {
         Objects.requireNonNull(money);
 
-        money.forEach((k, v) -> safe.merge(k, v, Integer::sum));
+        money.forEach((k, v) -> cellsSafe
+                .merge(k, v, (oldCell, newCell) -> new BanknotesCell(oldCell.getQuantity() + newCell.getQuantity())));
     }
 
 
@@ -54,7 +56,7 @@ public class ATM implements CashAcceptance, CashWithdrawal {
                 continue;
             }
 
-            Integer currentHave = safe.getOrDefault(banknote, 0);
+            int currentHave = cellsSafe.get(banknote).getQuantity();
             if (currentHave < currentNeed) {
                 neededBanknotes.put(banknote, currentHave);
                 requiredAmount -= banknote.getNumericalValue() * currentHave;
@@ -65,7 +67,10 @@ public class ATM implements CashAcceptance, CashWithdrawal {
 
         }
 
-        neededBanknotes.forEach((k, v) -> safe.merge(k, v, (a, b) -> a - b));
+        neededBanknotes.forEach((k, v) -> {
+            var currentCell = cellsSafe.get(k);
+            currentCell.setQuantity(currentCell.getQuantity() - v);
+        });
     }
 
 }
