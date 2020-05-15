@@ -1,17 +1,38 @@
 package com.otus.hw06;
 
-public class BanknotesCell {
-    private int quantity;
+import com.otus.hw06.interfaces.Cell;
 
-    public BanknotesCell(int quantity) {
-        this.quantity = quantity;
+public class BanknotesCell implements Cell {
+    private int quantity;
+    private final Banknotes cellBanknoteType;
+
+    public BanknotesCell(Banknotes cellBanknoteType) {
+        this.cellBanknoteType = cellBanknoteType;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    @Override
+    public void addToCell(int quantity) {
+        if (quantity < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        this.quantity += quantity;
+    }
+
+    @Override
+    public void extractFromCell(int quantity) {
+        if (quantity < 0 || quantity > this.quantity) {
+            throw new IllegalArgumentException();
+        }
+
+        this.quantity -= quantity;
+    }
+
+    public Banknotes getCellBanknoteType() {
+        return cellBanknoteType;
     }
 }

@@ -4,16 +4,20 @@ import com.otus.hw06.interfaces.CashAcceptance;
 import com.otus.hw06.interfaces.CashWithdrawal;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class ATM implements CashAcceptance, CashWithdrawal {
     private final Map<Banknotes, BanknotesCell> cellsSafe;
 
-
-    public ATM(Map<Banknotes, BanknotesCell> cellsSafe) {
-        Objects.requireNonNull(cellsSafe);
-        this.cellsSafe = new EnumMap<>(cellsSafe);
+    public ATM() {
+        cellsSafe = new EnumMap<>(Banknotes.class);
+        cellsSafe.put(Banknotes.FIVE_THOUSAND, new BanknotesCell(Banknotes.FIVE_THOUSAND));
+        cellsSafe.put(Banknotes.THOUSAND, new BanknotesCell(Banknotes.THOUSAND));
+        cellsSafe.put(Banknotes.FIVE_HUNDRED, new BanknotesCell(Banknotes.FIVE_HUNDRED));
+        cellsSafe.put(Banknotes.HUNDRED, new BanknotesCell(Banknotes.HUNDRED));
+        cellsSafe.put(Banknotes.FIFTY, new BanknotesCell(Banknotes.FIFTY));
     }
 
     public long getBalance() {
@@ -32,13 +36,13 @@ public class ATM implements CashAcceptance, CashWithdrawal {
     }
 
     @Override
-    public void putMoney(Map<Banknotes, BanknotesCell> money) {
+    public void putMoney(Map<Banknotes, Integer> money) {
         Objects.requireNonNull(money);
-
-        money.forEach((k, v) -> cellsSafe
-                .merge(k, v, (oldCell, newCell) -> new BanknotesCell(oldCell.getQuantity() + newCell.getQuantity())));
+        money.forEach((k, v) -> {
+            var currentCell = cellsSafe.get(k);
+            currentCell.addToCell(v);
+        });
     }
-
 
     @Override
     public void getMoney(int requiredAmount) {
@@ -69,7 +73,7 @@ public class ATM implements CashAcceptance, CashWithdrawal {
 
         neededBanknotes.forEach((k, v) -> {
             var currentCell = cellsSafe.get(k);
-            currentCell.setQuantity(currentCell.getQuantity() - v);
+            currentCell.extractFromCell(v);
         });
     }
 
