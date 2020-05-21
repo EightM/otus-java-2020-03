@@ -10,6 +10,11 @@ public class BanknotesCell implements Cell {
         this.cellBanknoteType = cellBanknoteType;
     }
 
+    public BanknotesCell(BanknotesCell other) {
+        this.cellBanknoteType = other.cellBanknoteType;
+        this.quantity = other.quantity;
+    }
+
     public int getQuantity() {
         return quantity;
     }
