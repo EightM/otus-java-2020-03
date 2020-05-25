@@ -1,20 +1,23 @@
 package com.otus.hw07;
 
 import com.otus.hw07.interfaces.ATMActions;
+import com.otus.hw07.interfaces.AtmDepartmnetManagement;
 
 import java.util.*;
 
-public class ATMDepartment implements ATMActions {
+public class ATMDepartment implements ATMActions, AtmDepartmnetManagement {
     private final Set<ATM> machines;
 
     public ATMDepartment() {
         this.machines = new HashSet<>();
     }
 
+    @Override
     public void addAtm(ATM atm) {
         machines.add(atm);
     }
 
+    @Override
     public boolean removeAtm(ATM atm) {
         return machines.remove(atm);
     }

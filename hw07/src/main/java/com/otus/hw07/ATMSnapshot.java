@@ -15,6 +15,6 @@ public class ATMSnapshot implements Snapshot {
     }
 
     public Map<Banknotes, BanknotesCell> getCellsSafeState() {
-        return cellsSafeState;
+        return Map.copyOf(cellsSafeState);
     }
 }
