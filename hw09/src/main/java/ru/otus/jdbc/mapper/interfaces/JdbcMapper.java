@@ -1,4 +1,4 @@
-package ru.otus.jdbc.mapper;
+package ru.otus.jdbc.mapper.interfaces;
 
 public interface JdbcMapper<T> {
     void insert(T objectData);
