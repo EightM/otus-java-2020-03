@@ -13,19 +13,19 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
 
     private final Class<T> clazz;
 
-    public EntityClassMetaDataImpl(Class<T> clazz) {
-        this.clazz = clazz;
+    public EntityClassMetaDataImpl(Class<?> clazz) {
+        this.clazz = (Class<T>) clazz;
     }
 
     @Override
     public String getName() {
-        return clazz.getSimpleName();
+        return clazz.getSimpleName().toLowerCase();
     }
 
     @Override
     public Constructor<T> getConstructor() {
         try {
-            return clazz.getConstructor(long.class, String.class, int.class);
+            return clazz.getConstructor();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

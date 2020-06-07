@@ -2,7 +2,6 @@ package ru.otus.jdbc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.otus.jdbc.DbExecutor;
 
 import java.sql.*;
 import java.util.List;

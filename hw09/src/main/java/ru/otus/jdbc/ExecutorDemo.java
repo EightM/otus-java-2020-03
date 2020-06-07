@@ -3,7 +3,6 @@ package ru.otus.jdbc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.core.model.User;
-import ru.otus.jdbc.DbExecutorImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,7 +35,7 @@ public class ExecutorDemo {
                     userId, rs -> {
                         try {
                             if (rs.next()) {
-                                return new User(rs.getLong("id"), rs.getString("name"));
+                                return new User(rs.getLong("id"), rs.getString("name"), rs.getInt("age"));
                             }
                         } catch (SQLException e) {
                             logger.error(e.getMessage(), e);

@@ -4,6 +4,7 @@ import ru.otus.jdbc.mapper.interfaces.EntitySQLMetaData;
 
 import java.lang.reflect.Field;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData {
 
@@ -32,17 +33,20 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData {
         String fieldsWithoutId = entityClassMetaData.getFieldsWithoutId().stream()
                 .map(Field::getName)
                 .collect(Collectors.joining(","));
-        return String.format("INSERT INTO %s(%s) values (?)", tableName, fieldsWithoutId);
+        String paramList = IntStream.range(0, entityClassMetaData.getFieldsWithoutId().size())
+                .mapToObj(i -> "?")
+                .collect(Collectors.joining(","));
+        return String.format("insert into %s(%s) values (%s)", tableName, fieldsWithoutId, paramList);
 
     }
 
     @Override
     public String getUpdateSql() {
-//        String tableName = entityClassMetaData.getName();
-//        String fieldsWithoutId = entityClassMetaData.getFieldsWithoutId().stream()
-//                .map(Field::getName)
-//                .collect(Collectors.joining(","));
-//        return String.format("UPDATE %s ")
-        return "";
+        String tableName = entityClassMetaData.getName();
+        String updateFields = entityClassMetaData.getFieldsWithoutId().stream()
+                .map(field -> field.getName() + " = ?")
+                .collect(Collectors.joining(","));
+        String idName = entityClassMetaData.getIdField().getName();
+        return String.format("UPDATE %s SET %s WHERE %s = ?", tableName, updateFields, idName);
     }
 }

@@ -1,16 +1,14 @@
 plugins {
     id 'java'
+    id "io.freefair.lombok" version "5.1.0"
 }
 
-sourceCompatibility = JavaVersion.VERSION_13
-targetCompatibility = JavaVersion.VERSION_13
-
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
-    implementation 'com.h2database:h2'
-    implementation 'ch.qos.logback:logback-classic'
+    implementation 'com.h2database:h2:1.4.200'
+    implementation 'ch.qos.logback:logback-classic:1.2.2'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

@@ -12,7 +12,9 @@ import ru.otus.jdbc.sessionmanager.SessionManagerJdbc;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class UserDaoJdbc implements UserDao {
@@ -29,11 +31,11 @@ public class UserDaoJdbc implements UserDao {
     @Override
     public Optional<User> findById(long id) {
         try {
-            return dbExecutor.executeSelect(getConnection(), "select id, name from user where id  = ?",
+            return dbExecutor.executeSelect(getConnection(), "select id, name, age from user where id  = ?",
                     id, rs -> {
                         try {
                             if (rs.next()) {
-                                return new User(rs.getLong("id"), rs.getString("name"));
+                                return new User(rs.getLong("id"), rs.getString("name"), rs.getInt("age"));
                             }
                         } catch (SQLException e) {
                             logger.error(e.getMessage(), e);
