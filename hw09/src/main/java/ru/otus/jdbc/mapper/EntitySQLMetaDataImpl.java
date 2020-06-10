@@ -10,8 +10,8 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData {
 
     private final EntityClassMetaDataImpl<T> entityClassMetaData;
 
-    public EntitySQLMetaDataImpl(Class<T> clazz) {
-        entityClassMetaData = new EntityClassMetaDataImpl<>(clazz);
+    public EntitySQLMetaDataImpl(EntityClassMetaDataImpl<T> entityClassMetaData) {
+        this.entityClassMetaData = entityClassMetaData;
     }
 
     @Override

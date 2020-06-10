@@ -30,7 +30,8 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
 
     @Override
     public void insert(T objectData) {
-        EntitySQLMetaData entitySQLMetaData = new EntitySQLMetaDataImpl<>(objectData.getClass());
+        EntityClassMetaDataImpl<T> entityClassMetaData = new EntityClassMetaDataImpl<>(objectData.getClass());
+        EntitySQLMetaData entitySQLMetaData = new EntitySQLMetaDataImpl<>(entityClassMetaData);
         String sqlInsert = entitySQLMetaData.getInsertSql();
         sessionManager.beginSession();
         try {
@@ -45,8 +46,8 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
 
     @Override
     public void update(T objectData) {
-        EntitySQLMetaData entitySQLMetaData = new EntitySQLMetaDataImpl<>(objectData.getClass());
-        EntityClassMetaDataImpl entityClassMetaData = new EntityClassMetaDataImpl(objectData.getClass());
+        EntityClassMetaDataImpl<T> entityClassMetaData = new EntityClassMetaDataImpl<>(objectData.getClass());
+        EntitySQLMetaData entitySQLMetaData = new EntitySQLMetaDataImpl<>(entityClassMetaData);
         Field idField = entityClassMetaData.getIdField();
         idField.setAccessible(true);
         Object id = null;
@@ -68,7 +69,7 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
 
     @Override
     public void insertOrUpdate(T objectData) {
-        EntityClassMetaDataImpl entityClassMetaData = new EntityClassMetaDataImpl(objectData.getClass());
+        EntityClassMetaDataImpl<T> entityClassMetaData = new EntityClassMetaDataImpl<>(objectData.getClass());
         Field idField = entityClassMetaData.getIdField();
         idField.setAccessible(true);
         long id = -1;
@@ -92,7 +93,8 @@ public class JdbcMapperImpl<T> implements JdbcMapper<T> {
 
     @Override
     public T findById(long id, Class<T> clazz){
-        EntitySQLMetaData entitySQLMetaData = new EntitySQLMetaDataImpl<>(clazz);
+        EntityClassMetaDataImpl<T> entityClassMetaData = new EntityClassMetaDataImpl<>(clazz);
+        EntitySQLMetaData entitySQLMetaData = new EntitySQLMetaDataImpl<>(entityClassMetaData);
         sessionManager.beginSession();
         try {
             Optional<T> findObject = dbExecutor.executeSelect(getConnection(), entitySQLMetaData.getSelectByIdSql(), id, resultSet -> {
