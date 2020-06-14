@@ -10,6 +10,7 @@ import ru.otus.core.model.User;
 import ru.otus.hibernate.dao.UserDaoHibernate;
 import ru.otus.hibernate.sessionmanager.SessionManagerHibernate;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -33,7 +34,9 @@ class UserDaoHibernateTest extends AbstractHibernateTest {
     @Test
     @DisplayName(" корректно загружать пользователя по заданному id")
     void shouldFindCorrectUserById() {
-        User expectedUser = new User(0, "Вася");
+        User expectedUser = new User(0, "John");
+        expectedUser.setAddress(new AddressDataSet("2nd street"));
+        expectedUser.setPhones(new HashSet<>());
         saveUser(expectedUser);
 
         assertThat(expectedUser.getId()).isGreaterThan(0);
