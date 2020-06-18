@@ -4,11 +4,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.AbstractHibernateTest;
+import ru.otus.core.model.AddressDataSet;
+import ru.otus.core.model.PhoneDataSet;
 import ru.otus.core.model.User;
 import ru.otus.hibernate.dao.UserDaoHibernate;
 import ru.otus.hibernate.sessionmanager.SessionManagerHibernate;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -29,7 +34,9 @@ class UserDaoHibernateTest extends AbstractHibernateTest {
     @Test
     @DisplayName(" корректно загружать пользователя по заданному id")
     void shouldFindCorrectUserById() {
-        User expectedUser = new User(0, "Вася");
+        User expectedUser = new User(0, "John");
+        expectedUser.setAddress(new AddressDataSet("2nd street"));
+        expectedUser.setPhones(new HashSet<>());
         saveUser(expectedUser);
 
         assertThat(expectedUser.getId()).isGreaterThan(0);
@@ -44,7 +51,12 @@ class UserDaoHibernateTest extends AbstractHibernateTest {
     @DisplayName(" корректно сохранять пользователя")
     @Test
     void shouldCorrectSaveUser() {
-        User expectedUser = new User(0, "Вася");
+        User expectedUser = new User(0, "John");
+        var address = new AddressDataSet("2nd Street");
+        Set<PhoneDataSet> phones = Set.of(new PhoneDataSet(expectedUser, "123"), new PhoneDataSet(expectedUser, "321"));
+        expectedUser.setAddress(address);
+        expectedUser.setPhones(phones);
+
         sessionManagerHibernate.beginSession();
         userDaoHibernate.insertOrUpdate(expectedUser);
         long id = expectedUser.getId();
@@ -54,16 +66,7 @@ class UserDaoHibernateTest extends AbstractHibernateTest {
 
         User actualUser = loadUser(id);
         assertThat(actualUser).isNotNull().hasFieldOrPropertyWithValue("name", expectedUser.getName());
-
-        expectedUser = new User(id, "Не Вася");
-        sessionManagerHibernate.beginSession();
-        userDaoHibernate.insertOrUpdate(expectedUser);
-        long newId = expectedUser.getId();
-        sessionManagerHibernate.commitSession();
-
-        assertThat(newId).isGreaterThan(0).isEqualTo(id);
-        actualUser = loadUser(newId);
-        assertThat(actualUser).isNotNull().hasFieldOrPropertyWithValue("name", expectedUser.getName());
+        assertThat(actualUser).isNotNull().isEqualToIgnoringNullFields(expectedUser);
 
     }
 
