@@ -27,20 +27,16 @@ public class DbServiceDemo {
         UserDao userDao = new UserDaoHibernate(sessionManager);
         DBServiceUser dbServiceUser = new DbServiceUserImpl(userDao);
 
+        for (int i = 0; i < 10; i++) {
+            dbServiceUser.saveUser(new User(i, i + " user"));
+        }
 
-        long id = dbServiceUser.saveUser(new User(0, "John"));
-        Optional<User> mayBeCreatedUser = dbServiceUser.getUser(id);
+        for (int i = 1; i <= 10; i++) {
+            dbServiceUser.getUser(i);
+        }
 
-        id = dbServiceUser.saveUser(new User(1L, "Max"));
-        Optional<User> mayBeUpdatedUser = dbServiceUser.getUser(id);
-
-        outputUserOptional("Created user", mayBeCreatedUser);
-        outputUserOptional("Updated user", mayBeUpdatedUser);
-    }
-
-    private static void outputUserOptional(String header, Optional<User> mayBeUser) {
-        System.out.println("-----------------------------------------------------------");
-        System.out.println(header);
-        mayBeUser.ifPresentOrElse(System.out::println, () -> logger.info("User not found"));
+        for (int i = 1; i <= 10; i++) {
+            dbServiceUser.getUser(i);
+        }
     }
 }
