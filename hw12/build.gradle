@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'ch.qos.logback:logback-classic:1.2.2'
+    implementation 'com.h2database:h2:1.4.200'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.17.Final'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
