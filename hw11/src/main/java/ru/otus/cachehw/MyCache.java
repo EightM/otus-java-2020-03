@@ -47,16 +47,25 @@ public class MyCache<K, V> implements HwCache<K, V> {
             var ref = iterator.next();
             if (ref.get() == listener) {
                 ref.clear();
+            } else if (ref.get() == null) {
+                iterator.remove();
             }
             iterator.remove();
         }
     }
 
     private void notifyListeners(K key, V value, String action) {
-        for (var ref : listeners) {
+
+        var iterator = listeners.iterator();
+        while (iterator.hasNext()) {
+            var ref = iterator.next();
             var listener = ref.get();
-            Objects.requireNonNull(listener);
-            listener.notify(key, value, action);
+            if (listener == null) {
+                iterator.remove();
+            } else {
+                listener.notify(key, value, action);
+            }
         }
     }
+
 }

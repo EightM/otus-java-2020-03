@@ -3,7 +3,6 @@ package ru.otus.core.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.cachehw.HwCache;
-import ru.otus.cachehw.MyCache;
 import ru.otus.core.dao.UserDao;
 import ru.otus.core.model.User;
 import ru.otus.core.sessionmanager.SessionManager;
@@ -11,13 +10,14 @@ import ru.otus.core.sessionmanager.SessionManager;
 import java.util.Optional;
 
 public class DbServiceUserImpl implements DBServiceUser {
-    private static Logger logger = LoggerFactory.getLogger(DbServiceUserImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(DbServiceUserImpl.class);
 
     private final UserDao userDao;
-    private final HwCache<Long, User> cache = new MyCache<>();
+    private final HwCache<Long, User> cache;
 
-    public DbServiceUserImpl(UserDao userDao) {
+    public DbServiceUserImpl(UserDao userDao, HwCache<Long, User> cache) {
         this.userDao = userDao;
+        this.cache = cache;
     }
 
     @Override
@@ -30,6 +30,7 @@ public class DbServiceUserImpl implements DBServiceUser {
                 sessionManager.commitSession();
 
                 logger.info("created user: {}", userId);
+                cache.put(userId, user);
                 return userId;
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);

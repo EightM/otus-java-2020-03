@@ -3,6 +3,7 @@ package ru.otus;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.otus.cachehw.MyCache;
 import ru.otus.core.dao.UserDao;
 import ru.otus.core.model.AddressDataSet;
 import ru.otus.core.model.PhoneDataSet;
@@ -25,7 +26,7 @@ public class DbServiceDemo {
 
         SessionManagerHibernate sessionManager = new SessionManagerHibernate(sessionFactory);
         UserDao userDao = new UserDaoHibernate(sessionManager);
-        DBServiceUser dbServiceUser = new DbServiceUserImpl(userDao);
+        DBServiceUser dbServiceUser = new DbServiceUserImpl(userDao, new MyCache<>());
 
         for (int i = 0; i < 10; i++) {
             dbServiceUser.saveUser(new User(i, i + " user"));
