@@ -12,6 +12,7 @@ import ru.otus.hibernate.sessionmanager.DatabaseSessionHibernate;
 import ru.otus.hibernate.sessionmanager.SessionManagerHibernate;
 
 import java.util.Optional;
+import java.util.Random;
 
 public class UserDaoHibernate implements UserDao {
     private static Logger logger = LoggerFactory.getLogger(UserDaoHibernate.class);
@@ -75,6 +76,28 @@ public class UserDaoHibernate implements UserDao {
             logger.error(e.getMessage(), e);
             throw new UserDaoException(e);
         }
+    }
+
+    @Override
+    public Optional<User> findRandomUser() {
+        DatabaseSessionHibernate currentSession = sessionManager.getCurrentSession();
+        try {
+            return Optional.ofNullable(currentSession.getHibernateSession().find(User.class, 1));
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+        DatabaseSessionHibernate currentSession = sessionManager.getCurrentSession();
+        try {
+            return Optional.ofNullable(currentSession.getHibernateSession().find(User.class, login));
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return Optional.empty();
     }
 
 

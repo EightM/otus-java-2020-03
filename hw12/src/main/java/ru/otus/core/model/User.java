@@ -24,12 +24,14 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private Set<PhoneDataSet> phones;
 
-    public User() {
-    }
+    private final String login;
+    private final String password;
 
-    public User(long id, String name) {
+    public User(long id, String name, String login, String password) {
         this.id = id;
         this.name = name;
+        this.login = login;
+        this.password = password;
     }
 
     public long getId() {
@@ -62,6 +64,14 @@ public class User {
 
     public void setPhones(Set<PhoneDataSet> phones) {
         this.phones = phones;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override

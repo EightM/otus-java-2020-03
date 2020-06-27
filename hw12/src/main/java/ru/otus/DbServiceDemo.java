@@ -29,7 +29,7 @@ public class DbServiceDemo {
         DBServiceUser dbServiceUser = new DbServiceUserImpl(userDao, new MyCache<>());
 
         for (int i = 0; i < 10; i++) {
-            dbServiceUser.saveUser(new User(i, i + " user"));
+            dbServiceUser.saveUser(new User(i, i + " user", "user1", "11111"));
         }
 
         for (int i = 1; i <= 10; i++) {
